@@ -2,6 +2,7 @@
 
 namespace codes\forms;
 
+use codes\code\Code;
 use codes\code\CodeFactory;
 use codes\libs\formapi\types\CustomForm;
 use codes\provider\ConfigProvider;
@@ -28,18 +29,26 @@ class ClaimCodeForm extends CustomForm {
                         foreach ($code->getRewards() as $rewards) {
                             Server::getInstance()->dispatchCommand(new ConsoleCommandSender(Server::getInstance(), new Language("eng")), str_replace(["{player}"], [$player->getName()], $rewards));
                         }
-                        $code->addReclamed($player->getName());
+                        if (!$code->hasReclamed($player->getName())) {
+                            $code->addReclamed($player->getName());
+                        }
                         $session = SessionFactory::getInstance()->get($player->getName());
                         if ($session->hasCode($code->getName())) {
                             $session->removeCode($code->getName());
                         }
-                        $player->sendMessage(str_replace(["&", "{code}"], ["§", $code->getName()], ConfigProvider::getInstance()->getData("code-reclamed")));
-                        $author = Server::getInstance()->getPlayerExact($code->getAuthor());
-                        if (!is_null($author)) {
-                            $author->sendMessage(str_replace(["&", "{player}", "{code}"], ["§", $player->getName(), $code->getName()], ConfigProvider::getInstance()->getData("author-code-claimed")));
-                        }
+                        $this->extracted($player, $code);
                     } else {
-                        $player->sendMessage(str_replace(["&"], ["§"], ConfigProvider::getInstance()->getData("code-already-reclamed")));
+                        $session = SessionFactory::getInstance()->get($player->getName());
+                        if ($session->hasCode($code->getName())) {
+                            foreach ($code->getRewards() as $rewards) {
+                                Server::getInstance()->dispatchCommand(new ConsoleCommandSender(Server::getInstance(), new Language("eng")), str_replace(["{player}"], [$player->getName()], $rewards));
+                            }
+                            $code->addReclamed($player->getName());
+                            $session->removeCode($code->getName());
+                            $this->extracted($player, $code);
+                        } else {
+                            $player->sendMessage(str_replace(["&"], ["§"], ConfigProvider::getInstance()->getData("code-already-reclamed")));
+                        }
                     }
                 } else {
                     $player->sendMessage(str_replace(["&", "{code}"], ["§", $code], ConfigProvider::getInstance()->getData("no-code-exist")));
@@ -51,8 +60,18 @@ class ClaimCodeForm extends CustomForm {
         $this->addInput("Write your code to claim it.", "Example: HDK293sn30");
         $this->addLabel("You have these codes available " . "(" . count($session->getCodes()) . ")" . ":");
         foreach ($session->getCodes() as $codeName) {
-            $code = CodeFactory::getInstance()->getCode($codeName);
-            $this->addLabel("-" . " " . $code->getName());
+            if (CodeFactory::getInstance()->existCode($codeName)) {
+                $code = CodeFactory::getInstance()->getCode($codeName);
+                $this->addLabel("-" . " " . $code->getName());
+            }
+        }
+    }
+
+    public function extracted(Player $player, ?Code $code): void {
+        $player->sendMessage(str_replace(["&", "{code}"], ["§", $code->getName()], ConfigProvider::getInstance()->getData("code-reclamed")));
+        $author = Server::getInstance()->getPlayerExact($code->getAuthor());
+        if (!is_null($author)) {
+            $author->sendMessage(str_replace(["&", "{player}", "{code}"], ["§", $player->getName(), $code->getName()], ConfigProvider::getInstance()->getData("author-code-claimed")));
         }
     }
 }

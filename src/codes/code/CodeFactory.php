@@ -16,8 +16,8 @@ class CodeFactory {
         $this->codes[$name] = new Code($author, $name, $time, $rewards, $reclamed);
     }
 
-    public function getCode(string $name): Code {
-        return $this->codes[$name];
+    public function getCode(string $name): ?Code {
+        return $this->codes[$name] ?? null;
     }
 
     public function removeCode(string $name): void {

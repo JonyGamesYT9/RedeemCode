@@ -24,6 +24,10 @@ class GiveCodeForm extends CustomForm {
                     return;
                 }
                 $session = SessionFactory::getInstance()->get($target->getName());
+                if ($session->hasCode($code[$data[1]])) {
+                    $player->sendMessage(TextFormat::RED . "This user already has this code.");
+                    return;
+                }
                 $session->addCode($code[$data[1]]);
                 $target->sendMessage(TextFormat::GREEN . "You received the code " . $code[$data[1]] . " use it.");
                 $player->sendMessage(TextFormat::GREEN . "You submitted the code correctly to the player " . $target->getName() . ".");

@@ -45,6 +45,10 @@ class Code {
         return !in_array($player, $this->getReclamed());
     }
 
+    public function hasReclamed(string $reclamed): bool {
+        return in_array($reclamed, $this->getReclamed());
+    }
+
     public function addReclamed(string $reclamed): void {
         $this->reclamed[] = $reclamed;
     }

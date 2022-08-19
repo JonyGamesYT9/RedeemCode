@@ -5,6 +5,7 @@ namespace codes\scheduler;
 use codes\code\Code;
 use codes\code\CodeFactory;
 use codes\provider\ConfigProvider;
+use codes\sessions\SessionFactory;
 use pocketmine\scheduler\Task;
 use pocketmine\Server;
 
@@ -26,6 +27,11 @@ class CodesTimeScheduler extends Task {
             $author = Server::getInstance()->getPlayerExact($code->getAuthor());
             if (!is_null($author)) {
                 $author->sendMessage(str_replace(["&", "{code}"], ["§", $code->getName()], ConfigProvider::getInstance()->getData("code-expired")));
+            }
+            foreach (SessionFactory::getInstance()->getSessions() as $session) {
+                if ($session->hasCode($code->getName())) {
+                    $session->removeCode($code->getName());
+                }
             }
             if (CodeFactory::getInstance()->existCode($code->getName())) {
                 CodeFactory::getInstance()->removeCode($code->getName());

@@ -54,7 +54,7 @@ class CodeCommand extends Command {
                         $sender->sendMessage("These are your created codes:");
                         foreach (CodeFactory::getInstance()->getCodes() as $codes) {
                             if ($codes->getAuthor() === $sender->getName()) {
-                                $sender->sendMessage(TextFormat::GREEN . "Name: " . $codes->getName() . ", Expire in: " . Time::getInstance()->getTimeToFullString($codes->getTime()));
+                                $sender->sendMessage("Name: " . $codes->getName() . ", Expire in: " . Time::getInstance()->getTimeToFullString($codes->getTime()));
                             }
                         }
                     } else {

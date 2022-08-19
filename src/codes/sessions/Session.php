@@ -37,7 +37,7 @@ class Session {
     }
 
     public function removeCode(string $name): void {
-        unset($this->codes[$name]);
+        unset($this->codes[array_search($name, $this->codes)]);
     }
 
     public function getName(): string {
@@ -51,7 +51,7 @@ class Session {
         $config = new Config(Codes::getInstance()->getDataFolder() . "sessions/" . $this->getName() . ".yml", Config::YAML);
         if ($config->get("codes") !== $this->getCodes()) {
             $config->set("codes", $this->getCodes());
+            $config->save();
         }
-        $config->save();
     }
 }
