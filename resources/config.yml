@@ -1,0 +1,8 @@
+---
+enter-a-code-to-claim: "&cYou need to enter a code to redeem it."
+code-expired: "&cYour code {code} has expired and was deleted."
+no-code-exist: "&cThe code {code} does not exist."
+code-already-reclamed: "&cYou cannot claim this code again."
+code-reclamed: "&aYou claimed the code {code} correctly."
+author-code-claimed: "&aThe player {player} has used your code {code}."
+...
