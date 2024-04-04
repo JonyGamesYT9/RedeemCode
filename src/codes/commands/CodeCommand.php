@@ -19,7 +19,7 @@ class CodeCommand extends Command {
         parent::__construct("code", "Use a code you have to receive gifts.", null, ["giftcode"]);
     }
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args) {
+    public function execute(CommandSender $sender, string $commandLabel, array $args): void {
         if ($sender instanceof Player) {
             if (empty($args[0])) {
                 $sender->sendForm(new ClaimCodeForm($sender));

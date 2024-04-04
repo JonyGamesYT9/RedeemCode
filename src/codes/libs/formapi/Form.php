@@ -23,7 +23,8 @@ abstract class Form implements PMForm {
         return $this->callable;
     }
 
-    public function setCallable(?callable $callable) {
+    public function setCallable(?callable $callable): void
+    {
         $this->callable = $callable;
     }
 
@@ -37,7 +38,7 @@ abstract class Form implements PMForm {
 
     public function processData(&$data): void {}
 
-    public function jsonSerialize() {
+    public function jsonSerialize(): array {
         return $this->data;
     }
 }
