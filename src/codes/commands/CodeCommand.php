@@ -10,6 +10,7 @@ use codes\provider\ConfigProvider;
 use codes\time\Time;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\permission\DefaultPermissions;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
@@ -17,6 +18,7 @@ class CodeCommand extends Command {
 
     public function __construct() {
         parent::__construct("code", "Use a code you have to receive gifts.", null, ["giftcode"]);
+        $this->setPermission(DefaultPermissions::ROOT_USER);
     }
 
     public function execute(CommandSender $sender, string $commandLabel, array $args): void {
