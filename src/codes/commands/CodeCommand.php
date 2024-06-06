@@ -9,6 +9,7 @@ use codes\forms\GiveCodeForm;
 use codes\provider\ConfigProvider;
 use codes\time\Time;
 use pocketmine\command\Command;
+use pocketmine\permission\DefaultPermissions;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
@@ -17,6 +18,7 @@ class CodeCommand extends Command {
 
     public function __construct() {
         parent::__construct("code", "Use a code you have to receive gifts.", null, ["giftcode"]);
+        $this->setPermission(DefaultPermissions::ROOR_USER);
     }
 
     public function execute(CommandSender $sender, string $commandLabel, array $args) {
