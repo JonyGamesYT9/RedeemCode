@@ -2,7 +2,7 @@
 name: RedeemCode
 version: 1.0-BETA
 main: codes\Codes
-api: 4.0.0
+api: 5.0.0
 author: iJonyMx
 permissions:
   codes.create:
